@@ -4,39 +4,36 @@
     </div> -->
   <div class="main-panel">
     <div class="d-flex justify-content-center py-2">
-      <div class="date">
-        <strong class="font-weight-bold">Today is:</strong>
+      <div class="text-center">
+        <strong>Today is:</strong>
         <div style="font-size:110%;" id="date">
           {{ getDate() }}
         </div>
       </div>
     </div>
-
-    <div
-      class="base d-flex flex-row align-items-center mx-2"
-      style="margin-bottom: 1rem;"
-      id="top"
-    >
-      <div class="pl-3">
+    <div class="container">
+      <hr class="mt-0" />
+      <div
+        class="d-flex align-items-center justify-content-around px-3 m-2 base"
+        id="top"
+      >
         <img
           src="../assets/planet-earth.png"
           title="Cases in the world..."
           style="width: 5rem; height: 5rem;"
         />
-      </div>
-      <div class="content-text" style="flex-grow: 1;">
-        <h3 style="margin: 0.5rem 0 0.25rem 0;">World</h3>
-        <div class="content-data align-items-center">
-          <div class="grid">
-            <div v-for="val in values" :key="val">
-              <p>{{ val.title }}</p>
-              <p>{{ val.value }}</p>
+        <div class="text-center mt-2">
+          <h3>World</h3>
+          <div class="grid mb-1">
+            <div v-for="val in values" :key="val" class="px-2">
+              <p class="m-0">{{ val.title }}</p>
+              <p class="m-0 mb-1">{{ val.value }}</p>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="add-location pb-2">
+    <div class="mb-4 mt-2 text-center">
       <button class="btn btn-outline-dark add-l font-weight-bold px-3">
         Add new location
         <svg
