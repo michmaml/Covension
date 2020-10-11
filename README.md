@@ -1,1 +1,1 @@
-Virus tracker straight from your browser view
+Virus tracker straight from your browser view.
