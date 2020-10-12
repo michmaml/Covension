@@ -1,6 +1,6 @@
 <template>
   <Fragment>
-    <div v-if="loading" class="text-center absolute" style="margin:8.75rem 0;">
+    <div v-if="loading" class="text-center absolute" style="margin:9rem 10rem;">
       <div
         class="spinner-border"
         role="status"
@@ -9,7 +9,7 @@
         <span class="sr-only">Loading...</span>
       </div>
     </div>
-    <div v-else class="main-panel relative fadein">
+    <div v-else class="relative fadein">
       <div class="d-flex justify-content-center py-2">
         <div class="text-center">
           <strong>Today is:</strong>
@@ -40,6 +40,9 @@
           </div>
         </div>
       </div>
+
+      <Country />
+
       <div class="my-3 text-center">
         <button class="btn btn-outline-dark add-l font-weight-bold px-3">
           Add new location
@@ -64,11 +67,16 @@
 
 <script>
 import moment from "moment";
-import myApi from "./api/myApi.js";
+import myApi from "./helpers/myApi.js";
+
+import Country from "@/components/Country.vue";
 
 export default {
   el: "MainPanel",
   name: "MainPanel",
+  components: {
+    Country
+  },
   data() {
     return {
       loading: true,
@@ -125,6 +133,7 @@ export default {
 
 .fadein {
   animation: fadeIn ease 0.5s;
+  overflow-y: hidden;
 }
 
 @keyframes fadeIn {
