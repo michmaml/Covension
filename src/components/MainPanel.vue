@@ -41,10 +41,12 @@
         </div>
       </div>
 
-      <Country />
-
       <div class="my-3 text-center">
-        <button class="btn btn-outline-dark add-l font-weight-bold px-3">
+        <button
+          class="btn btn-outline-dark add-l font-weight-bold px-3"
+          type="button"
+          @click="showModal"
+        >
           Add new location
           <svg
             width="1em"
@@ -60,6 +62,7 @@
             />
           </svg>
         </button>
+        <CountriesModal ref="modal" />
       </div>
     </div>
   </Fragment>
@@ -68,14 +71,17 @@
 <script>
 import moment from "moment";
 import myApi from "./helpers/myApi.js";
+import $ from "jquery";
 
-import Country from "@/components/Country.vue";
+import CountriesModal from "./CountriesModal.vue";
+
+//import Country from "@/components/Country.vue";
 
 export default {
   el: "MainPanel",
   name: "MainPanel",
   components: {
-    Country
+    CountriesModal
   },
   data() {
     return {
@@ -109,6 +115,10 @@ export default {
     },
     displayData: function() {
       this.loading = false;
+    },
+    showModal: function() {
+      let element = this.$refs.modal.$el;
+      $(element).modal("show");
     }
   }
 };

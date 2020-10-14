@@ -2,7 +2,7 @@
   <div class="container">
     <hr class="mt-0" />
     <div v-if="true" class="w-100 absolute" id="top">
-      <ListCountries />
+      <CountriesList />
     </div>
     <div
       v-else
@@ -28,12 +28,12 @@
 </template>
 
 <script>
-import ListCountries from "./ListCountries";
+import CountriesList from "./CountriesList";
 
 export default {
   name: "Country",
   components: {
-    ListCountries
+    CountriesList
   },
   data() {
     return {
