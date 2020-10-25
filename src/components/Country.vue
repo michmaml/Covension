@@ -44,13 +44,13 @@ export default {
 <style scoped>
 #top {
   background-color: rgb(240, 240, 240);
-  border-bottom: 0.25rem solid rgb(28, 92, 35);
+  border-bottom: 0.25rem solid var(--green);
 }
 
 .base,
 .add-l {
   border-radius: 1rem;
-  border: 3px solid rgb(100, 100, 100);
+  border: 3px solid var(--grey);
 }
 
 .grid {

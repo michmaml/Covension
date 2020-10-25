@@ -30,6 +30,11 @@ export default {
   font-family: "Noto Sans", sans-serif;
 }
 
+:root {
+  --green: rgb(28, 92, 35);
+  --grey: rgb(100, 100, 100);
+}
+
 img {
   width: 3rem;
   height: 3rem;
