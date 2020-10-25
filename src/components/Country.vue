@@ -1,11 +1,7 @@
 <template>
   <div class="container">
     <hr class="mt-0" />
-    <div v-if="true" class="w-100 absolute" id="top">
-      <CountriesList />
-    </div>
     <div
-      v-else
       class="d-flex align-items-center justify-content-around px-3 base"
       id="top"
     >
@@ -28,12 +24,13 @@
 </template>
 
 <script>
-import CountriesList from "./CountriesList";
+//import CountriesList from "./CountriesList";
 
 export default {
   name: "Country",
-  components: {
-    CountriesList
+  components: {},
+  props: {
+    values: null
   },
   data() {
     return {
@@ -43,3 +40,21 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+#top {
+  background-color: rgb(240, 240, 240);
+  border-bottom: 0.25rem solid rgb(28, 92, 35);
+}
+
+.base,
+.add-l {
+  border-radius: 1rem;
+  border: 3px solid rgb(100, 100, 100);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+</style>
