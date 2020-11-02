@@ -1,5 +1,5 @@
 <template>
-  <Fragment>
+  <div style="width:470px;">
     <div v-if="loading" class="text-center absolute" style="margin:9rem 10rem;">
       <div
         class="spinner-border"
@@ -18,21 +18,25 @@
           </div>
         </div>
       </div>
-      <Country :values="values" />
-      <CountriesModal />
+      <div v-for="country in countries" :key="country.code">
+        <Country :data="country" />
+      </div>
+      <CountriesModal
+        @addCountry="addCountry"
+        :countriesLimit="countriesLimit"
+      />
     </div>
-  </Fragment>
+  </div>
 </template>
 
 <script>
 import moment from "moment";
-import myApi from "./helpers/myApi.js";
+import axios from "axios";
 
 import CountriesModal from "./CountriesModal.vue";
 import Country from "./Country.vue";
 
 export default {
-  el: "MainPanel",
   name: "MainPanel",
   components: {
     CountriesModal,
@@ -41,30 +45,48 @@ export default {
   data() {
     return {
       loading: true,
-      values: [],
+      countries: [],
       tags: [
         "New Cases Today: ",
         "New Deaths Today: ",
         "All cases: ",
         "Recoveries Today: "
-      ]
+      ],
+      countriesLimit: false
     };
   },
   created() {
-    myApi.get().then(res => {
-      const virusData = [
-        res.data.todayCases,
-        res.data.todayDeaths,
-        res.data.cases,
-        res.data.todayRecovered
-      ];
-      for (let data = 0; data < virusData.length; data++) {
-        this.values.push({ title: this.tags[data], value: virusData[data] });
-      }
-    });
+    this.addCountry("all");
     setTimeout(() => this.displayData(), 500);
   },
+  computed: {
+    allCountries() {
+      return this.countries;
+    }
+  },
   methods: {
+    addCountry(id) {
+      if (this.countries.length < 4) {
+        this.countriesLimit = false;
+
+        if (id !== "all") id = "countries/" + id;
+        axios.get(`https://disease.sh/v3/covid-19/${id}`).then(res => {
+          const countryData = [
+            res.data.todayCases,
+            res.data.todayDeaths,
+            res.data.cases,
+            res.data.todayRecovered
+          ];
+          const fullData = [];
+          countryData.forEach((element, idx) => {
+            fullData.push({ title: this.tags[idx], value: element });
+          });
+          this.countries.push(fullData);
+        });
+      } else {
+        this.countriesLimit = true;
+      }
+    },
     getDate() {
       return moment(new Date()).format("D MMM YYYY");
     },

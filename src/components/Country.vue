@@ -13,9 +13,9 @@
       <div class="text-center my-2">
         <h3>World</h3>
         <div class="grid mb-1">
-          <div v-for="val in values" :key="val" class="px-2">
-            <p class="m-0">{{ val.title }}</p>
-            <p class="m-0 mb-1">{{ val.value }}</p>
+          <div v-for="country in data" :key="country" class="px-2">
+            <p class="m-0">{{ country.title }}</p>
+            <p class="m-0 mb-1">{{ country.value }}</p>
           </div>
         </div>
       </div>
@@ -24,13 +24,10 @@
 </template>
 
 <script>
-//import CountriesList from "./CountriesList";
-
 export default {
   name: "Country",
-  components: {},
   props: {
-    values: null
+    data: null
   },
   data() {
     return {

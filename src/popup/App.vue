@@ -1,8 +1,8 @@
 <template>
-  <Fragment>
+  <div>
     <Header />
     <MainPanel />
-  </Fragment>
+  </div>
 </template>
 
 <script>
