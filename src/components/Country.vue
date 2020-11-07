@@ -6,13 +6,17 @@
       id="top"
     >
       <img
-        :src="imgSrc"
+        :src="image.imgSrc"
         title="Cases in the world..."
         class="border border-dark rounded"
-        :style="{ width: '5rem', height: imgHeight }"
+        :style="{
+          width: '5rem',
+          height: image.imgHeight,
+          border: image.imgBorder
+        }"
       />
       <div class="text-center my-2">
-        <h3>{{ imgName }}</h3>
+        <h3>{{ image.imgName }}</h3>
         <div class="grid mb-1">
           <div v-for="cases in country" :key="cases.title" class="px-2">
             <p class="m-0">{{ cases.title }}</p>
@@ -34,9 +38,20 @@ export default {
   },
   data() {
     return {
-      imgSrc: this.country[4] === "World" ? imgWorld : this.country[5],
-      imgName: this.country[4],
-      imgHeight: this.country[4] === "World" ? "5rem" : "3.3rem"
+      image:
+        this.country[4] === "World"
+          ? {
+              imgSrc: imgWorld,
+              imgName: this.country[4],
+              imgHeight: "5rem",
+              imgBorder: "none"
+            }
+          : {
+              imgSrc: this.country[5],
+              imgName: this.country[4],
+              imgHeight: "3.3rem",
+              imgBorder: ""
+            }
     };
   },
   methods: {}
