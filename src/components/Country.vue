@@ -7,8 +7,8 @@
     >
       <img
         :src="image.imgSrc"
-        title="Cases in the world..."
-        class="border border-dark rounded"
+        :title="image.imgTitle"
+        :class="{ countryBorder: image.isCountry }"
         :style="{
           width: '5rem',
           height: image.imgHeight,
@@ -34,7 +34,7 @@ import imgWorld from "../assets/planet-earth.png";
 export default {
   name: "Country",
   props: {
-    country: null
+    country: Array
   },
   data() {
     return {
@@ -42,15 +42,19 @@ export default {
         this.country[4] === "World"
           ? {
               imgSrc: imgWorld,
+              imgTitle: "Cases in the world...",
               imgName: this.country[4],
               imgHeight: "5rem",
-              imgBorder: "none"
+              imgBorder: "none",
+              isCountry: false
             }
           : {
               imgSrc: this.country[5],
+              imgTitle: `Flag of ${this.country[4]}`,
               imgName: this.country[4],
               imgHeight: "3.3rem",
-              imgBorder: ""
+              imgBorder: "",
+              isCountry: true
             }
     };
   },
@@ -73,5 +77,10 @@ export default {
 .grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
+}
+
+.countryBorder {
+  border: 1px solid;
+  border-radius: 0.5rem;
 }
 </style>

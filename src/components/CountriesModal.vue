@@ -2,8 +2,8 @@
   <div>
     <div class="my-3 text-center">
       <button
-        v-if="!countriesLimit"
-        class="btn btn-outline-dark add-l font-weight-bold px-3 "
+        v-if="length <= 3"
+        class="btn btn-outline-dark font-weight-bold px-3"
         data-toggle="modal"
         data-target=".modal"
         data-backdrop="static"
@@ -14,7 +14,7 @@
       </button>
       <button
         v-else
-        class="btn btn-outline-dark add-l font-weight-bold disable px-3"
+        class="btn btn-outline-secondary font-weight-bold disable disabled px-3"
         title="You cannot have more than 3 locations"
       >
         Add new location
@@ -55,7 +55,8 @@
             </v-select>
             <div v-if="country" class="text-center">
               <div class="my-2">
-                Do you want to add {{ country.name }} to the list?
+                Do you want to add <strong>{{ country.name }}</strong> to the
+                list?
               </div>
               <button
                 @click="addCountry"
@@ -86,7 +87,7 @@ export default {
     PlusIcon
   },
   props: {
-    countriesLimit: null
+    length: Number
   },
   data() {
     return {

@@ -41,7 +41,9 @@ img {
 }
 
 .wrapper {
-  overflow: visible;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 #top {

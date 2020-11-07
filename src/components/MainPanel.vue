@@ -21,10 +21,7 @@
       <div v-for="country in countries" :key="country.code">
         <Country :country="country" />
       </div>
-      <CountriesModal
-        @addCountry="addCountry"
-        :countriesLimit="countriesLimit"
-      />
+      <CountriesModal @addCountry="addCountry" :length="countries.length + 1" />
     </div>
   </div>
 </template>
@@ -51,8 +48,7 @@ export default {
         "New Deaths Today: ",
         "All cases: ",
         "Recoveries Today: "
-      ],
-      flexHeight: null
+      ]
     };
   },
   created() {
@@ -67,36 +63,29 @@ export default {
   },
   methods: {
     addCountry(id) {
-      if (this.countries.length < 3) {
-        this.countriesLimit = false;
-
-        if (id !== "ALL") id = "countries/" + id;
-        axios.get(`https://disease.sh/v3/covid-19/${id}`).then(res => {
-          const countryData = [
-            res.data.todayCases,
-            res.data.todayDeaths,
-            res.data.cases,
-            res.data.todayRecovered
-          ];
-          const fullData = [];
-          countryData.forEach((element, idx) => {
-            fullData.push({ title: this.tags[idx], value: element });
-          });
-          if (id !== "ALL") {
-            fullData.push(res.data.country);
-            fullData.push(
-              `https://flagcdn.com/w320/${res.data.countryInfo.iso2.toLowerCase()}.png`
-            );
-          } else {
-            fullData.push("World");
-            fullData.push("../assets/planet-earth.png");
-          }
-          console.log(fullData);
-          this.countries.push(fullData);
+      if (id !== "ALL") id = "countries/" + id;
+      axios.get(`https://disease.sh/v3/covid-19/${id}`).then(res => {
+        const countryData = [
+          res.data.todayCases,
+          res.data.todayDeaths,
+          res.data.cases,
+          res.data.todayRecovered
+        ];
+        const fullData = [];
+        countryData.forEach((element, idx) => {
+          fullData.push({ title: this.tags[idx], value: element });
         });
-      } else {
-        this.countriesLimit = true;
-      }
+        if (id !== "ALL") {
+          fullData.push(res.data.country);
+          fullData.push(
+            `https://flagcdn.com/w320/${res.data.countryInfo.iso2.toLowerCase()}.png`
+          );
+        } else {
+          fullData.push("World");
+          fullData.push("../assets/planet-earth.png");
+        }
+        this.countries.push(fullData);
+      });
     },
     getDate() {
       return moment(new Date()).format("D MMM YYYY");
