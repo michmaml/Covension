@@ -6,16 +6,17 @@
       id="top"
     >
       <img
-        src="../assets/planet-earth.png"
+        :src="imgSrc"
         title="Cases in the world..."
-        style="width: 5rem; height: 5rem;"
+        class="border border-dark rounded"
+        :style="{ width: '5rem', height: imgHeight }"
       />
       <div class="text-center my-2">
-        <h3>World</h3>
+        <h3>{{ imgName }}</h3>
         <div class="grid mb-1">
-          <div v-for="country in data" :key="country" class="px-2">
-            <p class="m-0">{{ country.title }}</p>
-            <p class="m-0 mb-1">{{ country.value }}</p>
+          <div v-for="cases in country" :key="cases.title" class="px-2">
+            <p class="m-0">{{ cases.title }}</p>
+            <p class="m-0 mb-1">{{ cases.value }}</p>
           </div>
         </div>
       </div>
@@ -24,17 +25,21 @@
 </template>
 
 <script>
+import imgWorld from "../assets/planet-earth.png";
+
 export default {
   name: "Country",
   props: {
-    data: null
+    country: null
   },
   data() {
     return {
-      true: true,
-      result: null
+      imgSrc: this.country[4] === "World" ? imgWorld : this.country[5],
+      imgName: this.country[4],
+      imgHeight: this.country[4] === "World" ? "5rem" : "3.3rem"
     };
-  }
+  },
+  methods: {}
 };
 </script>
 

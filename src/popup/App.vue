@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="wrapper">
     <Header />
     <MainPanel />
   </div>
@@ -38,6 +38,10 @@ export default {
 img {
   width: 3rem;
   height: 3rem;
+}
+
+.wrapper {
+  overflow: visible;
 }
 
 #top {

@@ -2,13 +2,20 @@
   <div>
     <div class="my-3 text-center">
       <button
-        class="btn btn-outline-dark add-l font-weight-bold px-3 disable"
-        :title="{ 'You cannot have more than 3 locations': countriesLimit }"
-        :class="{ disable: countriesLimit }"
+        v-if="!countriesLimit"
+        class="btn btn-outline-dark add-l font-weight-bold px-3 "
         data-toggle="modal"
         data-target=".modal"
         data-backdrop="static"
         data-keyboard="false"
+      >
+        Add new location
+        <plus-icon style="height:1em; width:1em;" />
+      </button>
+      <button
+        v-else
+        class="btn btn-outline-dark add-l font-weight-bold disable px-3"
+        title="You cannot have more than 3 locations"
       >
         Add new location
         <plus-icon style="height:1em; width:1em;" />

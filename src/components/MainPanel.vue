@@ -1,5 +1,5 @@
 <template>
-  <div style="width:470px;">
+  <div style="width:470px; height:650px;">
     <div v-if="loading" class="text-center absolute" style="margin:9rem 10rem;">
       <div
         class="spinner-border"
@@ -19,7 +19,7 @@
         </div>
       </div>
       <div v-for="country in countries" :key="country.code">
-        <Country :data="country" />
+        <Country :country="country" />
       </div>
       <CountriesModal
         @addCountry="addCountry"
@@ -52,11 +52,12 @@ export default {
         "All cases: ",
         "Recoveries Today: "
       ],
-      countriesLimit: false
+      flexHeight: null
     };
   },
   created() {
-    this.addCountry("all");
+    this.currentCountry = "ALL";
+    this.addCountry(this.currentCountry);
     setTimeout(() => this.displayData(), 500);
   },
   computed: {
@@ -66,10 +67,10 @@ export default {
   },
   methods: {
     addCountry(id) {
-      if (this.countries.length < 4) {
+      if (this.countries.length < 3) {
         this.countriesLimit = false;
 
-        if (id !== "all") id = "countries/" + id;
+        if (id !== "ALL") id = "countries/" + id;
         axios.get(`https://disease.sh/v3/covid-19/${id}`).then(res => {
           const countryData = [
             res.data.todayCases,
@@ -81,6 +82,16 @@ export default {
           countryData.forEach((element, idx) => {
             fullData.push({ title: this.tags[idx], value: element });
           });
+          if (id !== "ALL") {
+            fullData.push(res.data.country);
+            fullData.push(
+              `https://flagcdn.com/w320/${res.data.countryInfo.iso2.toLowerCase()}.png`
+            );
+          } else {
+            fullData.push("World");
+            fullData.push("../assets/planet-earth.png");
+          }
+          console.log(fullData);
           this.countries.push(fullData);
         });
       } else {
