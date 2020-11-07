@@ -1,5 +1,5 @@
 <template>
-  <div style="width:470px; height:650px;">
+  <div style="width:470px; overflow-y:hidden;">
     <div v-if="loading" class="text-center absolute" style="margin:9rem 10rem;">
       <div
         class="spinner-border"

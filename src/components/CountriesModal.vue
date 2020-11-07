@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="overflow-y:hidden;">
     <div class="my-3 text-center">
       <button
         v-if="length <= 3"
@@ -12,14 +12,9 @@
         Add new location
         <plus-icon style="height:1em; width:1em;" />
       </button>
-      <button
-        v-else
-        class="btn btn-outline-secondary font-weight-bold disable disabled px-3"
-        title="You cannot have more than 3 locations"
-      >
-        Add new location
-        <plus-icon style="height:1em; width:1em;" />
-      </button>
+      <div v-else class="text-muted font-italic">
+        Only 3 locations are allowed at a time
+      </div>
     </div>
 
     <div class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel">
@@ -122,9 +117,5 @@ export default {
 
 .list {
   text-align: center;
-}
-
-.disable {
-  pointer-events: none;
 }
 </style>
