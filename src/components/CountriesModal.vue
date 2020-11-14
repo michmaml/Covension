@@ -8,6 +8,7 @@
         data-target=".modal"
         data-backdrop="static"
         data-keyboard="false"
+        @click="resetCountry"
       >
         Add new location
         <plus-icon style="height:1em; width:1em;" />
@@ -101,7 +102,6 @@ export default {
     },
     addCountry() {
       countriesStore.api.addCountry(this.country.code);
-      this.resetCountry();
     },
     resetCountry() {
       this.country = null;
