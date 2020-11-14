@@ -21,14 +21,15 @@
       <div v-for="country in countries" :key="country.code">
         <Country :country="country" />
       </div>
-      <CountriesModal @addCountry="addCountry" :length="countries.length + 1" />
+      <CountriesModal />
     </div>
   </div>
 </template>
 
 <script>
 import moment from "moment";
-import axios from "axios";
+
+import countriesStore from "../assets/countries-store";
 
 import CountriesModal from "./CountriesModal.vue";
 import Country from "./Country.vue";
@@ -42,51 +43,14 @@ export default {
   data() {
     return {
       loading: true,
-      countries: [],
-      tags: [
-        "New Cases Today: ",
-        "New Deaths Today: ",
-        "All cases: ",
-        "Recoveries Today: "
-      ]
+      countries: countriesStore.state.countries
     };
   },
   created() {
-    this.currentCountry = "ALL";
-    this.addCountry(this.currentCountry);
+    countriesStore.api.addCountry("ALL");
     setTimeout(() => this.displayData(), 500);
   },
-  computed: {
-    allCountries() {
-      return this.countries;
-    }
-  },
   methods: {
-    addCountry(id) {
-      if (id !== "ALL") id = "countries/" + id;
-      axios.get(`https://disease.sh/v3/covid-19/${id}`).then(res => {
-        const countryData = [
-          res.data.todayCases,
-          res.data.todayDeaths,
-          res.data.cases,
-          res.data.todayRecovered
-        ];
-        const fullData = [];
-        countryData.forEach((element, idx) => {
-          fullData.push({ title: this.tags[idx], value: element });
-        });
-        if (id !== "ALL") {
-          fullData.push(res.data.country);
-          fullData.push(
-            `https://flagcdn.com/w320/${res.data.countryInfo.iso2.toLowerCase()}.png`
-          );
-        } else {
-          fullData.push("World");
-          fullData.push("../assets/planet-earth.png");
-        }
-        this.countries.push(fullData);
-      });
-    },
     getDate() {
       return moment(new Date()).format("D MMM YYYY");
     },

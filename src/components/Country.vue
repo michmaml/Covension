@@ -16,7 +16,15 @@
         }"
       />
       <div class="text-center my-2">
-        <h3>{{ image.imgName }}</h3>
+        <div class="d-flex">
+          <div style="flex:1;"></div>
+          <h3>{{ image.imgName }}</h3>
+          <div class="mt-1" style="flex:1;">
+            <button type="button" class="close btn-close" aria-label="Close">
+              <span aria-hidden="true" style="font-size:70%;">&#x274C;</span>
+            </button>
+          </div>
+        </div>
         <div class="grid mb-1">
           <div v-for="cases in country" :key="cases.title" class="px-2">
             <p class="m-0">{{ cases.title }}</p>
@@ -80,7 +88,12 @@ export default {
 }
 
 .countryBorder {
-  border: 1px solid;
+  border: 2px solid;
   border-radius: 0.5rem;
+}
+
+.btn-close {
+  padding: 0;
+  margin: 0;
 }
 </style>

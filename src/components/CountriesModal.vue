@@ -2,7 +2,7 @@
   <div style="overflow-y:hidden;">
     <div class="my-3 text-center">
       <button
-        v-if="length <= 3"
+        v-if="state.countries.length < 3"
         class="btn btn-outline-dark font-weight-bold px-3"
         data-toggle="modal"
         data-target=".modal"
@@ -25,12 +25,12 @@
               Choose a country from the list
             </h5>
             <button class="close" data-dismiss="modal">
-              <span aria-hidden="true">&times;</span>
+              <span aria-hidden="true" @click="resetCountry">&times;</span>
             </button>
           </div>
           <div class="modal-body">
             <v-select
-              :options="countries"
+              :options="listOfCountries"
               v-model="country"
               class="mx-4"
               placeholder="Type here..."
@@ -72,7 +72,7 @@
 import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
 import COUNTRIES from "../assets/countries.json";
-
+import countriesStore from "../assets/countries-store";
 import PlusIcon from "../assets/plus-icon.vue";
 
 export default {
@@ -81,21 +81,30 @@ export default {
     vSelect,
     PlusIcon
   },
-  props: {
-    length: Number
-  },
   data() {
     return {
       countries: COUNTRIES,
-      country: null
+      country: null,
+      state: countriesStore.state
     };
+  },
+  computed: {
+    listOfCountries() {
+      return this.countries.filter(el => {
+        return !this.state.countriesISOs.includes(el.code);
+      });
+    }
   },
   methods: {
     parseIcon(code) {
       return `https://flagcdn.com/w320/${code.toLowerCase()}.png`;
     },
     addCountry() {
-      this.$emit("addCountry", this.country.code);
+      countriesStore.api.addCountry(this.country.code);
+      this.resetCountry();
+    },
+    resetCountry() {
+      this.country = null;
     }
   }
 };

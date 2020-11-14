@@ -42,8 +42,8 @@ img {
 
 .wrapper {
   width: 100%;
+  scrollbar-width: thin;
   overflow-x: hidden;
-  overflow-y: hidden;
 }
 
 #top {
