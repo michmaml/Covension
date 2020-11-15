@@ -61,7 +61,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .fadein {
   animation: fadeIn ease 0.5s;
   overflow-y: hidden;

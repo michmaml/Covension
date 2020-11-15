@@ -21,14 +21,14 @@
           <h3>{{ image.imgName }}</h3>
           <div class="mt-1" style="flex:1;">
             <button type="button" class="close btn-close" aria-label="Close">
-              <span aria-hidden="true" style="font-size:70%;">&#x274C;</span>
+              <span aria-hidden="true" class="emoji e-trans">❌</span>
             </button>
           </div>
         </div>
         <div class="grid mb-1">
           <div v-for="cases in country" :key="cases.title" class="px-2">
-            <p class="m-0">{{ cases.title }}</p>
-            <p class="m-0 mb-1">{{ cases.value }}</p>
+            <p class="m-0">{{ parseNumber(cases.title) }}</p>
+            <p class="m-0 mb-1">{{ parseNumber(cases.value) }}</p>
           </div>
         </div>
       </div>
@@ -66,7 +66,22 @@ export default {
             }
     };
   },
-  methods: {}
+  methods: {
+    parseNumber(value) {
+      let length = Math.ceil(Math.log10(value + 1));
+      if (length > 4) {
+        let numbers = value.toString().split("");
+        let iter = 1;
+        for (let i = numbers.length - 1; i > 0; i--) {
+          if (iter % 3 === 0) numbers.splice(i, 0, ",");
+          iter++;
+        }
+        value = numbers.join("");
+      }
+      return value;
+      //return value.toLocaleString();
+    }
+  }
 };
 </script>
 
@@ -88,12 +103,22 @@ export default {
 }
 
 .countryBorder {
-  border: 2px solid;
+  border: 3px solid;
   border-radius: 0.5rem;
 }
 
-.btn-close {
-  padding: 0;
-  margin: 0;
+/* Emoji transformations */
+.emoji {
+  opacity: 0.8;
+  font-size: 70%;
+  transform: scale(0.5);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  transition: text-shadow 0.2s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.emoji:hover {
+  opacity: 1;
+  transform: scale(1);
+  text-shadow: 0 20px 20px rgba(0, 0, 0, 0.3);
 }
 </style>

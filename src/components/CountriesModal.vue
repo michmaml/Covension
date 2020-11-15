@@ -26,7 +26,7 @@
               Choose a country from the list
             </h5>
             <button class="close" data-dismiss="modal">
-              <span aria-hidden="true" @click="resetCountry">&times;</span>
+              <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
