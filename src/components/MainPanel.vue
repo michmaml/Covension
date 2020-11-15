@@ -1,10 +1,10 @@
 <template>
-  <div style="width:470px; overflow-y:hidden;">
-    <div v-if="loading" class="text-center absolute" style="margin:9rem 10rem;">
+  <div style="width: 470px; overflow-y: hidden">
+    <div v-if="loading" class="text-center absolute" style="margin: 9rem 10rem">
       <div
         class="spinner-border"
         role="status"
-        style="width:3rem; height:3rem;"
+        style="width: 3rem; height: 3rem"
       >
         <span class="sr-only">Loading...</span>
       </div>
@@ -13,7 +13,7 @@
       <div class="d-flex justify-content-center py-2">
         <div class="text-center">
           <strong>Today is:</strong>
-          <div style="font-size:110%;" id="date">
+          <div style="font-size: 110%" id="date">
             {{ getDate() }}
           </div>
         </div>
@@ -38,16 +38,17 @@ export default {
   name: "MainPanel",
   components: {
     CountriesModal,
-    Country
+    Country,
   },
   data() {
     return {
       loading: true,
-      countries: countriesStore.state.countries
+      addCountry: countriesStore.actions.addCountry,
+      countries: countriesStore.state.countries,
     };
   },
   created() {
-    countriesStore.api.addCountry("ALL");
+    this.addCountry("ALL");
     setTimeout(() => this.displayData(), 500);
   },
   methods: {
@@ -56,8 +57,8 @@ export default {
     },
     displayData() {
       this.loading = false;
-    }
-  }
+    },
+  },
 };
 </script>
 

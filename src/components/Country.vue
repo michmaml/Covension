@@ -12,16 +12,22 @@
         :style="{
           width: '5rem',
           height: image.imgHeight,
-          border: image.imgBorder
+          border: image.imgBorder,
         }"
       />
       <div class="text-center my-2">
         <div class="d-flex">
-          <div style="flex:1;"></div>
+          <div style="flex: 1"></div>
           <h3>{{ image.imgName }}</h3>
-          <div class="mt-1" style="flex:1;">
-            <button type="button" class="close btn-close" aria-label="Close">
-              <span aria-hidden="true" class="emoji e-trans">❌</span>
+          <div class="mt-1" style="flex: 1">
+            <button
+              v-if="length > 1"
+              type="button"
+              class="close"
+              aria-label="Close"
+              @click="removeCountry(image.imgName)"
+            >
+              <span aria-hidden="true" class="emoji e-trans">&#X274C;</span>
             </button>
           </div>
         </div>
@@ -38,14 +44,17 @@
 
 <script>
 import imgWorld from "../assets/planet-earth.png";
+import countriesStore from "../assets/countries-store";
 
 export default {
   name: "Country",
   props: {
-    country: Array
+    country: Array,
   },
   data() {
     return {
+      removeCountry: countriesStore.actions.removeCountry,
+      length: countriesStore.state.countries.length,
       image:
         this.country[4] === "World"
           ? {
@@ -54,7 +63,7 @@ export default {
               imgName: this.country[4],
               imgHeight: "5rem",
               imgBorder: "none",
-              isCountry: false
+              isCountry: false,
             }
           : {
               imgSrc: this.country[5],
@@ -62,8 +71,8 @@ export default {
               imgName: this.country[4],
               imgHeight: "3.3rem",
               imgBorder: "",
-              isCountry: true
-            }
+              isCountry: true,
+            },
     };
   },
   methods: {
@@ -80,17 +89,12 @@ export default {
       }
       return value;
       //return value.toLocaleString();
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style scoped>
-#top {
-  background-color: rgb(240, 240, 240);
-  border-bottom: 0.25rem solid var(--green);
-}
-
 .base,
 .add-l {
   border-radius: 1rem;
@@ -109,7 +113,6 @@ export default {
 
 /* Emoji transformations */
 .emoji {
-  opacity: 0.8;
   font-size: 70%;
   transform: scale(0.5);
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -117,7 +120,6 @@ export default {
 }
 
 .emoji:hover {
-  opacity: 1;
   transform: scale(1);
   text-shadow: 0 20px 20px rgba(0, 0, 0, 0.3);
 }

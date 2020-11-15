@@ -1,5 +1,5 @@
 <template>
-  <div style="overflow-y:hidden;">
+  <div style="overflow-y: hidden">
     <div class="my-3 text-center">
       <button
         v-if="state.countries.length < 3"
@@ -11,7 +11,7 @@
         @click="resetCountry"
       >
         Add new location
-        <plus-icon style="height:1em; width:1em;" />
+        <plus-icon style="height: 1em; width: 1em" />
       </button>
       <div v-else class="text-muted font-italic">
         Only 3 locations are allowed at a time
@@ -22,9 +22,7 @@
       <div class="modal-dialog md" role="document">
         <div class="modal-content mod">
           <div class="modal-header">
-            <h5>
-              Choose a country from the list
-            </h5>
+            <h5>Choose a country from the list</h5>
             <button class="close" data-dismiss="modal">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -34,19 +32,21 @@
               :options="listOfCountries"
               v-model="country"
               class="mx-4"
-              placeholder="Type here..."
+              placeholder="Type 3 or more letters..."
               label="name"
             >
               <template slot="option" slot-scope="option">
-                <span class="mr-2" :class="option.code">
-                  <img
-                    class="border border-dark rounded"
-                    :src="parseIcon(option.code)"
-                    style="height:1.5rem; width:2.25rem;"
-                  />
-                </span>
-                <span class="">{{ option.name }}</span>
-                <hr class="mb-1 mt-2" />
+                <div class="my-1">
+                  <span class="mr-2" :class="option.code">
+                    <img
+                      class="border border-dark rounded"
+                      :src="parseIcon(option.code)"
+                      style="height: 1.5rem; width: 2.25rem"
+                    />
+                  </span>
+                  <span>{{ option.name }}</span>
+                </div>
+                <hr class="m-0" />
               </template>
             </v-select>
             <div v-if="country" class="text-center">
@@ -55,7 +55,7 @@
                 list?
               </div>
               <button
-                @click="addCountry"
+                @click="addCountry(this.country.code)"
                 class="btn btn-outline-dark"
                 data-dismiss="modal"
               >
@@ -80,33 +80,39 @@ export default {
   name: "CountriesModal",
   components: {
     vSelect,
-    PlusIcon
+    PlusIcon,
   },
   data() {
     return {
-      countries: COUNTRIES,
       country: null,
-      state: countriesStore.state
+      searchInput: "",
+      countries: COUNTRIES,
+      state: countriesStore.state,
+      addCountry: countriesStore.actions.addCountry,
     };
   },
+  /*   created() {
+    this.countries = this.searchInput.length > 2 ? COUNTRIES : [];
+  }, */
   computed: {
     listOfCountries() {
-      return this.countries.filter(el => {
+      return this.countries.filter((el) => {
         return !this.state.countriesISOs.includes(el.code);
       });
-    }
+    },
   },
   methods: {
     parseIcon(code) {
       return `https://flagcdn.com/w320/${code.toLowerCase()}.png`;
     },
-    addCountry() {
-      countriesStore.api.addCountry(this.country.code);
-    },
     resetCountry() {
       this.country = null;
-    }
-  }
+    },
+    /* validateInput(e) {
+      const isCharacterValid = /[a-z]/g.test(e.key);
+      if (isCharacterValid) this.searchInput = this.searchInput + e.key;
+    }, */
+  },
 };
 </script>
 

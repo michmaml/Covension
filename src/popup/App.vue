@@ -16,8 +16,8 @@ export default {
   name: "App",
   components: {
     Header,
-    MainPanel
-  }
+    MainPanel,
+  },
 };
 </script>
 
@@ -47,6 +47,7 @@ img {
 }
 
 #top {
+  display: block;
   background-color: rgb(240, 240, 240);
   border-bottom: 0.25rem solid rgb(28, 92, 35);
 }

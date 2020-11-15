@@ -1,5 +1,6 @@
 import axios from "axios";
 
+const API_URL = "https://disease.sh/v3/covid-19/";
 const state = {
   /** Each country (max 3) : 
    * [
@@ -11,21 +12,21 @@ const state = {
    *   @param ICON_URL
    * ]
    */
-  countries: [],
+
   tags: [
     "New Cases Today: ",
     "New Deaths Today: ",
     "All cases: ",
     "Recoveries Today: "
   ],
-  countriesISOs: []
+  countriesISOs: [],
+  countries: []
 };
 
-const api = {
-  API_URL: "https://disease.sh/v3/covid-19/",
+const actions = {
   addCountry(isoID) {
     const endpoint = isoID !== "ALL" ? `countries/${isoID}` : "all";
-    axios.get(`${this.API_URL}${endpoint}`).then(res => {
+    axios.get(`${API_URL}${endpoint}`).then(res => {
       const countryData = [
         res.data.todayCases,
         res.data.todayDeaths,
@@ -46,10 +47,16 @@ const api = {
       }
       state.countries.push(fullData);
     });
+  },
+  removeCountry(isoID) {
+    const { countries } = state;
+    countries.splice(countries.findIndex(country => {
+      return country[4] === isoID;
+    }), 1);
   }
 };
 
 export default {
   state,
-  api
+  actions
 };
