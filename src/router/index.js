@@ -1,28 +1,42 @@
 import Vue from "vue";
-import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
+import Auth from '@okta/okta-vue';
+import Router from "vue-router";
 
-Vue.use(VueRouter);
+import MainPanelComponent from '@/components/MainPanel.vue';
+import LoginComponent from '@/components/MainPanel.vue';
 
-const routes = [
-  {
-    path: "/",
-    name: "Home",
-    component: Home
-  },
-  {
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue")
-  }
-];
+// {okta} stuff
+const OKTA_DOMAIN = process.env.cvn_DOMAIN;
+const CLIENT_ID = process.env.cvn_CLIENT_ID;
+const CALLBACK_PATH = '/login/callback';
 
-const router = new VueRouter({
-  routes
+const ISSUER = `https://${OKTA_DOMAIN}/oauth2/default`;
+const HOST = window.location.host;
+const REDIRECT_URI = `http://${HOST}${CALLBACK_PATH}`;
+const SCOPES = 'openid profile email';
+
+const config = {
+  issuer: ISSUER,
+  clientId: CLIENT_ID,
+  redirectUri: REDIRECT_URI,
+  scope: SCOPES.split(/\s+/),
+};
+
+Vue.use(Auth, { ...config });
+
+const router = new Router({
+  mode: 'history',
+  routes: [
+    //{ path: '/login', component: LoginComponent },
+    { path: CALLBACK_PATH, component: Auth.handleCallback() },
+    { path: '/', component: MainPanelComponent, meta: { requiresAuth: true } }
+  ]
 });
+
+router.beforeEach(Vue.prototype.$auth.authRedirectGuard());
+
+Vue.use(Router);
+
+router.beforeEach(Vue.prototype.$auth.authRedirectGuard());
 
 export default router;

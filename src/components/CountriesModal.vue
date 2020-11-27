@@ -55,7 +55,7 @@
                 list?
               </div>
               <button
-                @click="addCountry(this.country.code)"
+                @click="addCountry(country.code)"
                 class="btn btn-outline-dark"
                 data-dismiss="modal"
               >
@@ -73,9 +73,8 @@
 import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
 import COUNTRIES from "../assets/countries.json";
-import countriesStore from "../assets/countries-store";
+import countriesStore from "../stores/countries-store";
 import PlusIcon from "../assets/plus-icon.vue";
-
 export default {
   name: "CountriesModal",
   components: {
@@ -112,6 +111,9 @@ export default {
       const isCharacterValid = /[a-z]/g.test(e.key);
       if (isCharacterValid) this.searchInput = this.searchInput + e.key;
     }, */
+    zuk() {
+      this.addCountry(this.country.code);
+    },
   },
 };
 </script>
@@ -120,17 +122,11 @@ export default {
 .md {
   overflow-y: hidden;
 }
-
 .modal-content {
   margin-bottom: 15rem;
 }
-
 .mod {
   border-radius: 0.8rem;
   border: 4px solid var(--green);
-}
-
-.list {
-  text-align: center;
 }
 </style>

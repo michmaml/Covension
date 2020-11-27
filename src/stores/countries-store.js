@@ -1,5 +1,17 @@
 import axios from "axios";
 
+/**
+ *  If the extension is opened for the very first time it will set world as 
+ *  a default country card. All new countries will be saved to local
+ *  @param state.countries and then passed to @function updateStorage() to 
+ *  update local storage. Same goes for removing elements, first update the local 
+ *  storage and then browser's storage.
+ * 
+ * 
+ */
+
+
+const STORAGE = chrome.storage.sync;
 const API_URL = "https://disease.sh/v3/covid-19/";
 const state = {
   /** Each country (max 3) : 
@@ -46,6 +58,7 @@ const actions = {
         fullData.push("../assets/planet-earth.png");
       }
       state.countries.push(fullData);
+      updateStorage();
     });
   },
   removeCountry(isoID) {
@@ -53,8 +66,33 @@ const actions = {
     countries.splice(countries.findIndex(country => {
       return country[4] === isoID;
     }), 1);
+
+    updateStorage();
   }
 };
+
+/**
+ *  Handle CHROMIUM Local Storage
+ * 
+ */
+
+(function setupStorage() {
+  if (!state.countries.length) { actions.addCountry('ALL'); }
+  else {
+    STORAGE.get(null, (countries) => {
+      //state.countries = 
+      let t = Object.keys(countries);
+      console.log(t);
+    });
+  }
+})()
+
+/* Update local browser storage */
+const updateStorage = () => {
+  if (state.countries.length) {
+    STORAGE.set({ 'countries': state.countries });
+  }
+}
 
 export default {
   state,

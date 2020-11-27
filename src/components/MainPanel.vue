@@ -28,8 +28,7 @@
 
 <script>
 import moment from "moment";
-
-import countriesStore from "../assets/countries-store";
+import countriesStore from "../stores/countries-store";
 
 import CountriesModal from "./CountriesModal.vue";
 import Country from "./Country.vue";
@@ -48,7 +47,7 @@ export default {
     };
   },
   created() {
-    this.addCountry("ALL");
+    //this.addCountry("ALL");
     setTimeout(() => this.displayData(), 500);
   },
   methods: {

@@ -44,7 +44,7 @@
 
 <script>
 import imgWorld from "../assets/planet-earth.png";
-import countriesStore from "../assets/countries-store";
+import countriesStore from "../stores/countries-store";
 
 export default {
   name: "Country",
