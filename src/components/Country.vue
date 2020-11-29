@@ -25,7 +25,7 @@
               type="button"
               class="close"
               aria-label="Close"
-              @click="removeCountry(image.imgName)"
+              @click="zuk(image)"
             >
               <span aria-hidden="true" class="emoji e-trans">&#X274C;</span>
             </button>
@@ -44,7 +44,7 @@
 
 <script>
 import imgWorld from "../assets/planet-earth.png";
-import countriesStore from "../stores/countries-store";
+import store from "../stores/countries-store";
 
 export default {
   name: "Country",
@@ -53,8 +53,8 @@ export default {
   },
   data() {
     return {
-      removeCountry: countriesStore.actions.removeCountry,
-      length: countriesStore.state.countries.length,
+      removeCountry: store.storage.removeFromStorage,
+      length: store.state.countries.length,
       image:
         this.country[4] === "World"
           ? {
@@ -66,7 +66,7 @@ export default {
               isCountry: false,
             }
           : {
-              imgSrc: this.country[5],
+              imgSrc: `https://flagcdn.com/w320/${this.country[5].toLowerCase()}.png`,
               imgTitle: `Flag of ${this.country[4]}`,
               imgName: this.country[4],
               imgHeight: "3.3rem",
@@ -89,6 +89,10 @@ export default {
       }
       return value;
       //return value.toLocaleString();
+    },
+    zuk(d) {
+      console.log(d);
+      this.removeCountry(d);
     },
   },
 };

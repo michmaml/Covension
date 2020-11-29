@@ -10,7 +10,6 @@ import axios from "axios";
  * 
  */
 
-
 const STORAGE = chrome.storage.sync;
 const API_URL = "https://disease.sh/v3/covid-19/";
 const state = {
@@ -20,8 +19,8 @@ const state = {
    *   {'New Deaths Today: ' : @param deathsToday},
    *   {'All cases: ' : @param casesAll},
    *   {'Recoveries Today: ' : @param recoveriesToday},
-   *   @param ISO_CODE,
-   *   @param ICON_URL
+   *   @param Country_Name
+   *   @param Country_ISO
    * ]
    */
 
@@ -31,8 +30,40 @@ const state = {
     "All cases: ",
     "Recoveries Today: "
   ],
-  countriesISOs: [],
   countries: []
+};
+
+const storage = {
+  /* Setup the data everytime the extension is opened */
+  setupStorage() {
+    STORAGE.get(null, function (data) {
+      if (Object.keys(data).length === 0) {
+        storage.addToStorage('ALL');
+      } else {
+        state.countries = [];
+        for (const key in data) {
+          console.log(data[key])
+          storage.addToStorage(data[key]);
+        }
+      }
+    });
+  },
+
+  /* Add to browser storage and change locally */
+  addToStorage(isoCode) {
+    STORAGE.get(null, function (data) {
+      if (Object.keys(data).length <= 2) {
+        STORAGE.set({ [isoCode]: isoCode });
+        actions.addCountry(isoCode);
+      }
+    });
+  },
+
+  /* Remove from browser storage and then locally */
+  removeFromStorage(isoCode) {
+    STORAGE.remove(isoCode);
+    actions.removeCountry(isoCode);
+  }
 };
 
 const actions = {
@@ -49,52 +80,23 @@ const actions = {
       countryData.forEach((element, idx) => {
         fullData.push({ title: state.tags[idx], value: element });
       });
-      if (isoID !== "ALL") {
-        fullData.push(res.data.country);
-        state.countriesISOs.push(isoID);
-        fullData.push(`https://flagcdn.com/w320/${isoID.toLowerCase()}.png`);
-      } else {
-        fullData.push("World");
-        fullData.push("../assets/planet-earth.png");
-      }
+      fullData.push(isoID === 'ALL' ? 'World' : res.data.country);
+      fullData.push(isoID);
+
       state.countries.push(fullData);
-      updateStorage();
+      console.log(state.countries)
     });
   },
   removeCountry(isoID) {
+    console.log(state.countries)
     const { countries } = state;
     countries.splice(countries.findIndex(country => {
       return country[4] === isoID;
     }), 1);
-
-    updateStorage();
   }
 };
 
-/**
- *  Handle CHROMIUM Local Storage
- * 
- */
-
-(function setupStorage() {
-  if (!state.countries.length) { actions.addCountry('ALL'); }
-  else {
-    STORAGE.get(null, (countries) => {
-      //state.countries = 
-      let t = Object.keys(countries);
-      console.log(t);
-    });
-  }
-})()
-
-/* Update local browser storage */
-const updateStorage = () => {
-  if (state.countries.length) {
-    STORAGE.set({ 'countries': state.countries });
-  }
-}
-
 export default {
   state,
-  actions
+  storage
 };

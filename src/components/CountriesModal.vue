@@ -2,7 +2,7 @@
   <div style="overflow-y: hidden">
     <div class="my-3 text-center">
       <button
-        v-if="state.countries.length < 3"
+        v-if="countries.length < 3"
         class="btn btn-outline-dark font-weight-bold px-3"
         data-toggle="modal"
         data-target=".modal"
@@ -73,7 +73,7 @@
 import vSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
 import COUNTRIES from "../assets/countries.json";
-import countriesStore from "../stores/countries-store";
+import store from "../stores/countries-store";
 import PlusIcon from "../assets/plus-icon.vue";
 export default {
   name: "CountriesModal",
@@ -85,18 +85,17 @@ export default {
     return {
       country: null,
       searchInput: "",
-      countries: COUNTRIES,
-      state: countriesStore.state,
-      addCountry: countriesStore.actions.addCountry,
+      countriesJSON: COUNTRIES,
+      countries: store.state.countries,
+      addCountry: store.storage.addToStorage,
     };
   },
-  /*   created() {
-    this.countries = this.searchInput.length > 2 ? COUNTRIES : [];
-  }, */
   computed: {
     listOfCountries() {
-      return this.countries.filter((el) => {
-        return !this.state.countriesISOs.includes(el.code);
+      let usedCountries = this.countries.map((ob) => ob[5]);
+      console.log(usedCountries);
+      return this.countriesJSON.filter((el) => {
+        return !usedCountries.includes(el.code);
       });
     },
   },
@@ -106,13 +105,6 @@ export default {
     },
     resetCountry() {
       this.country = null;
-    },
-    /* validateInput(e) {
-      const isCharacterValid = /[a-z]/g.test(e.key);
-      if (isCharacterValid) this.searchInput = this.searchInput + e.key;
-    }, */
-    zuk() {
-      this.addCountry(this.country.code);
     },
   },
 };

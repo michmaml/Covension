@@ -28,7 +28,7 @@
 
 <script>
 import moment from "moment";
-import countriesStore from "../stores/countries-store";
+import store from "../stores/countries-store";
 
 import CountriesModal from "./CountriesModal.vue";
 import Country from "./Country.vue";
@@ -42,12 +42,12 @@ export default {
   data() {
     return {
       loading: true,
-      addCountry: countriesStore.actions.addCountry,
-      countries: countriesStore.state.countries,
+      storageSetup: store.storage.setupStorage,
+      countries: store.state.countries,
     };
   },
   created() {
-    //this.addCountry("ALL");
+    this.storageSetup();
     setTimeout(() => this.displayData(), 500);
   },
   methods: {
