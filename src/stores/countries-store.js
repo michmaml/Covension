@@ -36,13 +36,12 @@ const state = {
 const storage = {
   /* Setup the data everytime the extension is opened */
   setupStorage() {
-    STORAGE.get(null, function (data) {
+    STORAGE.get(['countries'], function (data) {
       if (Object.keys(data).length === 0) {
         storage.addToStorage('ALL');
       } else {
         state.countries = [];
         for (const key in data) {
-          console.log(data[key])
           storage.addToStorage(data[key]);
         }
       }
@@ -51,17 +50,23 @@ const storage = {
 
   /* Add to browser storage and change locally */
   addToStorage(isoCode) {
-    STORAGE.get(null, function (data) {
-      if (Object.keys(data).length <= 2) {
-        STORAGE.set({ [isoCode]: isoCode });
-        actions.addCountry(isoCode);
+    STORAGE.get(['countries'], function (data) {
+      if (Object.keys(data).length === 0) {
+        STORAGE.set({ 'countries': [isoCode] });
+      } else if (Object.keys(data).length <= 2) {
+        data['countries'].push(isoCode);
+        STORAGE.set({ 'countries': data['countries'] });
       }
+      actions.addCountry(isoCode);
     });
   },
 
   /* Remove from browser storage and then locally */
   removeFromStorage(isoCode) {
-    STORAGE.remove(isoCode);
+    STORAGE.get(['countries'], function (data) {
+      const updatedCountries = data.countries.filter(el => el !== isoCode);
+      STORAGE.set({ 'countries': updatedCountries });
+    });
     actions.removeCountry(isoCode);
   }
 };
@@ -84,14 +89,12 @@ const actions = {
       fullData.push(isoID);
 
       state.countries.push(fullData);
-      console.log(state.countries)
     });
   },
   removeCountry(isoID) {
-    console.log(state.countries)
     const { countries } = state;
     countries.splice(countries.findIndex(country => {
-      return country[4] === isoID;
+      return country[5] === isoID;
     }), 1);
   }
 };

@@ -92,10 +92,8 @@ export default {
   },
   computed: {
     listOfCountries() {
-      let usedCountries = this.countries.map((ob) => ob[5]);
-      console.log(usedCountries);
       return this.countriesJSON.filter((el) => {
-        return !usedCountries.includes(el.code);
+        return !this.countries.map((ob) => ob[5]).includes(el.code);
       });
     },
   },

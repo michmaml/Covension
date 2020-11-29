@@ -21,11 +21,11 @@
           <h3>{{ image.imgName }}</h3>
           <div class="mt-1" style="flex: 1">
             <button
-              v-if="length > 1"
+              v-if="countries.length > 1"
               type="button"
               class="close"
               aria-label="Close"
-              @click="zuk(image)"
+              @click="zuk()"
             >
               <span aria-hidden="true" class="emoji e-trans">&#X274C;</span>
             </button>
@@ -54,7 +54,7 @@ export default {
   data() {
     return {
       removeCountry: store.storage.removeFromStorage,
-      length: store.state.countries.length,
+      countries: store.state.countries,
       image:
         this.country[4] === "World"
           ? {
@@ -90,9 +90,9 @@ export default {
       return value;
       //return value.toLocaleString();
     },
-    zuk(d) {
-      console.log(d);
-      this.removeCountry(d);
+    zuk() {
+      console.log(this.country[5]);
+      this.removeCountry(this.country[5]);
     },
   },
 };
