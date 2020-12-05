@@ -94,7 +94,7 @@ const actions = {
   removeCountry(isoID) {
     const { countries } = state;
     countries.splice(countries.findIndex(country => {
-      return country[5] === isoID;
+      return country[4] === isoID;
     }), 1);
   }
 };

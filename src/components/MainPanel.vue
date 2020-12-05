@@ -19,7 +19,7 @@
         </div>
       </div>
       <div v-for="country in countries" :key="country.code">
-        <Country :country="country" />
+        <Country :country="country" :key="country.code" />
       </div>
       <CountriesModal />
     </div>

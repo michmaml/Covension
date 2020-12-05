@@ -21,11 +21,14 @@
           <h3>{{ image.imgName }}</h3>
           <div class="mt-1" style="flex: 1">
             <button
-              v-if="countries.length > 1"
+              v-if="
+                countries.length > 1 &&
+                countries.indexOf(country) === countries.length - 1
+              "
               type="button"
               class="close"
               aria-label="Close"
-              @click="zuk()"
+              @click="removeCountry(image.imgName)"
             >
               <span aria-hidden="true" class="emoji e-trans">&#X274C;</span>
             </button>
@@ -90,10 +93,15 @@ export default {
       return value;
       //return value.toLocaleString();
     },
-    zuk() {
-      console.log(this.country[5]);
-      this.removeCountry(this.country[5]);
-    },
+    /* zuk(isoID) {
+      const { countries } = this.state;
+      countries.splice(
+        countries.findIndex((country) => {
+          return country[5] === isoID;
+        }),
+        1
+      );
+    }, */
   },
 };
 </script>
