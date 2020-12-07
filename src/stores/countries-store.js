@@ -36,15 +36,18 @@ const state = {
 const storage = {
   /* Setup the data everytime the extension is opened */
   setupStorage() {
-    STORAGE.get(['countries'], function (data) {
-      if (Object.keys(data).length === 0) {
-        storage.addToStorage('ALL');
-      } else {
-        state.countries = [];
-        for (const key in data) {
-          storage.addToStorage(data[key]);
+    return new Promise(resolve => {
+      STORAGE.get(['countries'], (data) => {
+        if (Object.keys(data).length === 0) {
+          this.addToStorage('ALL');
+        } else {
+          state.countries = [];
+          data.countries.forEach((elem) => {
+            actions.addCountry(elem);
+          });
         }
-      }
+        resolve();
+      });
     });
   },
 

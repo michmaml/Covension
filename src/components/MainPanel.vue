@@ -42,12 +42,12 @@ export default {
   data() {
     return {
       loading: true,
-      storageSetup: store.storage.setupStorage,
-      countries: store.state.countries,
+      countries: [],
     };
   },
-  created() {
-    this.storageSetup();
+  async created() {
+    await store.storage.setupStorage();
+    this.countries = store.state.countries;
     setTimeout(() => this.displayData(), 500);
   },
   methods: {
