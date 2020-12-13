@@ -28,7 +28,7 @@
               type="button"
               class="close"
               aria-label="Close"
-              @click="removeCountry(image.imgName)"
+              @click="removeCountry(country[5])"
             >
               <span aria-hidden="true" class="emoji e-trans">&#X274C;</span>
             </button>
@@ -93,15 +93,6 @@ export default {
       return value;
       //return value.toLocaleString();
     },
-    /* zuk(isoID) {
-      const { countries } = this.state;
-      countries.splice(
-        countries.findIndex((country) => {
-          return country[5] === isoID;
-        }),
-        1
-      );
-    }, */
   },
 };
 </script>
