@@ -39,7 +39,12 @@ const storage = {
     return new Promise(resolve => {
       STORAGE.get(['countries'], (data) => {
         if (Object.keys(data).length === 0) {
+          // Add world to the list
           this.addToStorage('ALL');
+
+          // Add local country according to user's IP (will not work with vpn)
+          axios.get('http://www.geoplugin.net/json.gp').then((res) =>
+            this.addToStorage(res.data.geoplugin_countryCode));
         } else {
           state.countries = [];
           data.countries.forEach((elem) => {
