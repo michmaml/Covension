@@ -43,8 +43,11 @@ const storage = {
           this.addToStorage('ALL');
 
           // Add local country according to user's IP (will not work with vpn)
-          axios.get('http://www.geoplugin.net/json.gp').then((res) =>
-            this.addToStorage(res.data.geoplugin_countryCode));
+          axios.get('http://www.geoplugin.net/json.gp').then((res) => {
+            if (res.data.geoplugin_countryCode) {
+              this.addToStorage(res.data.geoplugin_countryCode);
+            }
+          });
         } else {
           state.countries = [];
           data.countries.forEach((elem) => {
